@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Support · Keep ’Em Honest</title>
+    <meta
+      name="description"
+      content="Help with Keep ’Em Honest, the iPhone app for looking into city money yourself. Every figure, with its record."
+    />
+    <link
+      rel="canonical"
+      href="https://p51moustache.github.io/keep-em-honest-site/"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      content="#F3F3EE"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#1E1C19"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%23FBFBF7'/%3E%3Cg transform='translate(0 20)'%3E%3Cpath d='M46 12H20V108H46M114 12H140V108H114' fill='none' stroke='%231A2130' stroke-width='13' stroke-linecap='square'/%3E%3Crect x='54' y='30' width='52' height='60' fill='%23E6D3A3'/%3E%3Ctext x='80' y='80' text-anchor='middle' font-family='Courier New,monospace' font-weight='700' font-size='58' fill='%231A2130'%3E$%3C/text%3E%3C/g%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Libre+Franklin:wght@400;700;800&display=swap"
+    />
+    <style>
+      /* Keep ’Em Honest's paper and ink (docs/DESIGN.md §17.2, §19.5):
+         literal copies of src/theme/tokens.ts's values, each named by its
+         token. Light is paper on a pale desk; dark is Lamplight. */
+      :root {
+        --canvas: #f3f3ee;
+        --paper: #fbfbf7;
+        --rule: #c3ccbb;
+        --edge: #1a2130;
+        --ink: #1a2130;
+        --ink2: #3b4350;
+        --label: #56614f;
+        --manila: #e6d3a3;
+        --shadow: #d5d9cc;
+        --words:
+          "Libre Franklin", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+          Arial, sans-serif;
+        --typed: "Courier Prime", "Courier New", Courier, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --canvas: #1e1c19;
+          --paper: #282520;
+          --rule: #3d3931;
+          --edge: #4a453c;
+          --ink: #ddd6c6;
+          --ink2: #bdb6a6;
+          --label: #9a9384;
+          --manila: #4a4130;
+          --shadow: #151310;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--canvas);
+        color: var(--ink);
+        font: 400 17px/24px var(--words);
+      }
+      .page {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 28px 16px 48px;
+      }
+      /* The horizontal lockup (§19.3): the mark, three strokes, the name;
+         the tagline under the name. */
+      .lockup {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .mark {
+        display: block;
+        width: 35px;
+        height: 29px;
+        flex: none;
+      }
+      .mark-ink {
+        fill: none;
+        stroke: var(--ink);
+      }
+      .mark-block {
+        fill: var(--manila);
+      }
+      .mark-dollar {
+        fill: var(--ink);
+        font: 700 58px var(--typed);
+        text-anchor: middle;
+      }
+      .name {
+        display: block;
+        font: 800 24px/28px var(--words);
+        letter-spacing: -0.015em;
+        white-space: nowrap;
+      }
+      .tagline {
+        display: block;
+        margin-top: 2px;
+        color: var(--ink2);
+        font: 400 13px/18px var(--typed);
+      }
+      nav {
+        display: flex;
+        gap: 20px;
+        margin: 22px 0 16px;
+        font: 700 15px/20px var(--words);
+      }
+      nav a {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 0;
+        color: var(--label);
+        text-decoration: none;
+      }
+      nav a::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+      }
+      nav a[aria-current="page"] {
+        color: var(--ink);
+      }
+      nav a[aria-current="page"]::before {
+        background: var(--ink);
+      }
+      /* A sheet (§17.4): square, a 1.5 px edge, a hard offset shadow. */
+      main {
+        background: var(--paper);
+        border: 1.5px solid var(--edge);
+        box-shadow: 3px 3px 0 var(--shadow);
+        padding: 24px 20px 12px;
+      }
+      .eyebrow {
+        margin: 0 0 6px;
+        color: var(--label);
+        font: 700 11px/14px var(--words);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font: 800 28px/33px var(--words);
+        letter-spacing: -0.3px;
+      }
+      h2 {
+        margin: 0 0 8px;
+        font: 800 22px/27px var(--words);
+        letter-spacing: -0.2px;
+      }
+      h3 {
+        margin: 0 0 6px;
+        font: 700 19px/24px var(--words);
+      }
+      p {
+        margin: 0 0 12px;
+        color: var(--ink2);
+      }
+      .typed {
+        font-family: var(--typed);
+      }
+      section {
+        padding: 18px 0 8px;
+        border-top: 1px solid var(--rule);
+      }
+      .intro {
+        padding-bottom: 12px;
+      }
+      .question {
+        padding-top: 6px;
+      }
+      .question + .question {
+        margin-top: 10px;
+        padding-top: 16px;
+        border-top: 1px solid var(--rule);
+      }
+      /* Square buttons (§17.4): primary is ink with paper words, secondary
+         is paper with an ink edge. */
+      .button {
+        display: inline-block;
+        margin: 4px 0 14px;
+        padding: 11px 16px;
+        border: 1.5px solid var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+        font: 700 17px/22px var(--words);
+        text-decoration: none;
+        overflow-wrap: anywhere;
+      }
+      .button.secondary {
+        background: var(--paper);
+        color: var(--ink);
+      }
+      .button:hover {
+        box-shadow: 3px 3px 0 var(--shadow);
+      }
+      a:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 3px;
+      }
+      .effective {
+        color: var(--label);
+        font: 400 15px/21px var(--typed);
+      }
+      footer {
+        margin-top: 24px;
+        color: var(--label);
+        font: 400 13px/18px var(--words);
+      }
+      footer p {
+        margin: 0 0 4px;
+        color: var(--label);
+      }
+      @media (min-width: 720px) {
+        .page {
+          padding-top: 48px;
+        }
+        main {
+          padding: 32px 32px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <a class="lockup" href="./">
+          <svg
+            class="mark"
+            viewBox="13.5 5.5 133 109"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              class="mark-ink"
+              d="M 46 12 H 20 V 108 H 46 M 114 12 H 140 V 108 H 114"
+              stroke-width="13"
+              stroke-linecap="square"
+              stroke-linejoin="miter"
+            />
+            <rect class="mark-block" x="54" y="30" width="52" height="60" />
+            <text class="mark-dollar" x="80" y="80">$</text>
+          </svg>
+          <span>
+            <span class="name">Keep ’Em Honest</span>
+            <span class="tagline">Every figure, with its record.</span>
+          </span>
+        </a>
+      </header>
+      <nav aria-label="Pages">
+        <a href="./" aria-current="page">Support</a>
+        <a href="privacy.html">Privacy</a>
+      </nav>
+      <main>
+        <div class="intro">
+          <p class="eyebrow">Support</p>
+          <h1>Help with Keep ’Em Honest</h1>
+          <p>
+            Keep ’Em Honest is an iPhone app for looking into city money
+            yourself: the whole budget at once, what changed after the council’s
+            vote, and who was paid.
+          </p>
+          <p>
+            Every figure comes with a receipt that leads to the public record it
+            came from.
+          </p>
+        </div>
+
+        <section aria-labelledby="contact">
+          <h2 id="contact">Questions, or a figure that looks wrong?</h2>
+          <p>
+            Write to us. If it is about a figure, say which screen it is on and
+            what you expected to see.
+          </p>
+          <a class="button" href="mailto:zlce.app@gmail.com"
+            >Write to <span class="typed">zlce.app@gmail.com</span></a
+          >
+        </section>
+
+        <section aria-labelledby="questions">
+          <h2 id="questions">Common questions</h2>
+          <div class="question">
+            <h3>Where do the figures come from?</h3>
+            <p>
+              From each city’s own published tables. For Los Angeles, those are
+              the City Controller’s budget and spending tables and Checkbook LA,
+              its record of payments.
+            </p>
+            <p>
+              Every figure in the app has a receipt: the table it came from, the
+              day it was retrieved, and a fingerprint of the exact data. Tap a
+              figure, then its receipt.
+            </p>
+          </div>
+          <div class="question">
+            <h3>Does the app send anything?</h3>
+            <p>
+              No. The app sends nothing by itself. A records request is a draft:
+              you read it, copy or share it, and send it yourself.
+            </p>
+          </div>
+          <div class="question">
+            <h3>Does it track me?</h3>
+            <p>
+              No. There are no accounts, no analytics, no ads and no tracking.
+              Your pins and cases stay on your phone.
+            </p>
+            <a class="button secondary" href="privacy.html">Privacy policy</a>
+          </div>
+          <div class="question">
+            <h3>Which cities does it cover?</h3>
+            <p>Los Angeles first. Its neighbours are next.</p>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <p>
+          Keep ’Em Honest is independent. It is not affiliated with any city
+          government.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
